@@ -4,7 +4,6 @@ from fastapi.staticfiles import StaticFiles
 
 from pypdf import PdfReader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 
 import google.generativeai as genai
@@ -23,6 +22,13 @@ load_dotenv()
 genai.configure(
     api_key=os.getenv("GEMINI_API_KEY")
 )
+def get_embedding(text):
+    result = genai.embed_content(
+        model="models/text-embedding-004",
+        content=text
+    )
+
+    return result["embedding"]
 
 app = FastAPI()
 
@@ -47,14 +53,6 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
-
-# =========================
-# EMBEDDING MODEL
-# =========================
-
-embedding_model = SentenceTransformer(
-    "all-MiniLM-L6-v2"
 )
 
 # =========================
@@ -157,9 +155,10 @@ async def upload_pdf(
             for doc in all_documents
         ]
 
-        embeddings = embedding_model.encode(
-            all_texts
-        )
+        embeddings = [
+    get_embedding(text)
+    for text in all_texts
+]
 
         embeddings = np.array(
             embeddings,
@@ -246,9 +245,10 @@ async def delete_pdf(filename: str):
                 for doc in documents
             ]
 
-            embeddings = embedding_model.encode(
-                texts
-            )
+            embeddings = [
+                get_embedding(text)
+                for text in texts
+            ]
 
             embeddings = np.array(
                 embeddings,
@@ -364,53 +364,19 @@ async def ask_question(
                 f"Assistant: {chat['answer']}\n\n"
             )
 
-        with open(
-            "documents.pkl",
-            "rb"
-        ) as f:
-
+        with open("documents.pkl", "rb") as f:
             documents = pickle.load(f)
 
-        filtered_texts = [
-    doc["text"]
-    for doc in documents
-]
-        filtered_embeddings = embedding_model.encode(
-    filtered_texts
-)
-        filtered_embeddings = np.array(
-    filtered_embeddings,
-    dtype=np.float32
-)
-        filtered_index = faiss.IndexFlatL2(
-    filtered_embeddings.shape[1]
-)
-        filtered_index.add(
-    filtered_embeddings
-)
-        question_embedding = embedding_model.encode(
-    [question]
-)
-        question_embedding = np.array(
-    question_embedding,
-    dtype=np.float32
-)
-        k = min(
-    3,
-    len(documents)
-)
-        distances, indices = filtered_index.search(
-    question_embedding,
-    k=k
-)
-        
+        index = faiss.read_index("faiss_index.bin")
+
+        question_embedding = np.array([get_embedding(question)], dtype=np.float32)
+
+        k = min(3, len(documents))
+        distances, indices = index.search(question_embedding, k=k)
 
         retrieved_chunks = []
-
         for idx in indices[0]:
-
             if idx < len(documents):
-
                 retrieved_chunks.append(
                     f"""
 Source: {documents[idx]['source']}
