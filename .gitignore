@@ -1,0 +1,23 @@
+# Python Virtual Environments
+.venv/
+venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Backend Sensitive Files
+backend/.env
+backend/uploaded_pdfs/
+backend/documents.pkl
+backend/faiss_index.bin
+backend/__pycache__/
+backend/venv/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# OS Files
+.DS_Store
+Thumbs.db
