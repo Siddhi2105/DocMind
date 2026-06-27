@@ -33,7 +33,7 @@ Question:
 """
 
     response = client.models.generate_content(
-        model="gemini-3.1-flash-image",
+        model="gemini-2.5-flash",
         contents=prompt
     )
 
