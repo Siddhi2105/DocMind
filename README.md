@@ -1,4 +1,4 @@
-# 📄 DocMind – AI Powered PDF Chatbot
+# 📄 DocMind – AI-Powered PDF Chatbot
 
 > Chat with your PDF documents using Retrieval-Augmented Generation (RAG), FastAPI, React, FAISS, and Google Gemini.
 
@@ -13,33 +13,32 @@
 
 ## 🚀 Overview
 
-DocMind is an AI-powered PDF chatbot that allows users to upload documents and ask natural language questions about their content.
+DocMind is an AI-powered document assistant that enables users to upload PDF files and interact with them using natural language.
 
-Instead of searching keywords, DocMind understands the document semantically using **Retrieval-Augmented Generation (RAG)**. Relevant sections are retrieved through vector similarity search and passed to Google's Gemini model to generate accurate, context-aware answers.
+Instead of relying on keyword-based search, DocMind leverages **Retrieval-Augmented Generation (RAG)** to understand document context, retrieve the most relevant information using vector similarity search, and generate accurate answers with Google Gemini.
 
 ---
 
 ## ✨ Features
 
-- 📂 Upload multiple PDF documents
-- 💬 Chat naturally with uploaded PDFs
+- 📂 Upload and manage multiple PDF documents
+- 💬 Ask questions in natural language
 - 🧠 Retrieval-Augmented Generation (RAG)
-- 🔍 Semantic search using FAISS Vector Database
-- 📑 Automatic PDF chunking
-- 📄 Built-in PDF Viewer
-- 🗑️ Delete uploaded PDFs
-- 🔄 Persistent vector database
-- 🧾 Chat history support
-- 📌 Source-aware retrieval
-- ⚡ FastAPI backend
-- 🎨 Modern React UI
-- ☁️ Deployable on Render + Vercel
+- 🔍 Semantic search with FAISS
+- 📄 Integrated PDF Viewer
+- 📑 Automatic document chunking
+- 🗑 Delete uploaded PDFs
+- 💾 Persistent vector database
+- 📝 Conversation history
+- ⚡ FastAPI REST API
+- 🎨 Modern React interface
+- ☁️ Cloud deployment support
 
 ---
 
 # 🏗 Architecture
 
-```
+```text
                 User
                   │
                   ▼
@@ -53,10 +52,10 @@ Instead of searching keywords, DocMind understands the document semantically usi
  PDF Processing          User Question
       │                       │
       ▼                       ▼
- Chunk Documents       Query Embedding
+ Text Chunking        Query Embedding
       │                       │
       ▼                       ▼
- Gemini Embeddings      Gemini Embeddings
+ Gemini Embeddings    Gemini Embeddings
       │                       │
       └───────────┬───────────┘
                   ▼
@@ -66,7 +65,7 @@ Instead of searching keywords, DocMind understands the document semantically usi
         Relevant Context Chunks
                   │
                   ▼
-       Gemini 2.5 Flash LLM
+         Gemini 2.5 Flash
                   │
                   ▼
              Final Answer
@@ -74,16 +73,16 @@ Instead of searching keywords, DocMind understands the document semantically usi
 
 ---
 
-# 🧠 Tech Stack
+# 🛠 Tech Stack
 
-### Frontend
+## Frontend
 
 - React
 - Axios
+- Vite
 - CSS
-- React Icons
 
-### Backend
+## Backend
 
 - FastAPI
 - Python
@@ -93,17 +92,17 @@ Instead of searching keywords, DocMind understands the document semantically usi
 - PyPDF
 - LangChain Text Splitters
 
-### Deployment
+## Deployment
 
-- Render (Backend)
-- Vercel (Frontend)
+- Render
+- Vercel
 
 ---
 
-# 📂 Project Structure
+# 📁 Project Structure
 
-```
-PDFGPT/
+```text
+DocMind/
 │
 ├── backend/
 │   ├── app/
@@ -131,63 +130,56 @@ PDFGPT/
 
 # ⚙️ How It Works
 
-## 1. Upload PDF
+### 1️⃣ Upload a PDF
 
-The uploaded PDF is parsed using **PyPDF**.
+The uploaded document is processed using **PyPDF**.
 
----
+### 2️⃣ Text Chunking
 
-## 2. Text Chunking
+The extracted text is divided into smaller semantic chunks using LangChain's Recursive Character Text Splitter.
 
-Large documents are split into smaller semantic chunks using LangChain's Recursive Character Text Splitter.
+### 3️⃣ Embedding Generation
 
----
+Each chunk is converted into vector embeddings using Google's **Gemini Embedding Model**.
 
-## 3. Embedding Generation
+### 4️⃣ Vector Indexing
 
-Each chunk is converted into dense vector embeddings using Google's Gemini Embedding model.
+Embeddings are stored inside a **FAISS** vector database for efficient similarity search.
 
----
+### 5️⃣ Ask Questions
 
-## 4. Vector Storage
+When a user submits a query:
 
-Embeddings are stored inside a FAISS vector index for efficient similarity search.
-
----
-
-## 5. Ask Questions
-
-When the user asks a question:
-
-- The query is embedded
-- FAISS retrieves the most relevant chunks
-- Retrieved context is passed to Gemini
-- Gemini generates an answer strictly from the document context
+- Generate query embeddings
+- Perform semantic similarity search
+- Retrieve the most relevant document chunks
+- Send retrieved context to Gemini
+- Return an AI-generated response based only on the document
 
 ---
 
-# 🔍 Retrieval-Augmented Generation (RAG)
+# 🔍 RAG Pipeline
 
-```
+```text
 User Question
       │
       ▼
 Generate Query Embedding
       │
       ▼
-Similarity Search (FAISS)
+FAISS Similarity Search
       │
       ▼
-Top Matching Chunks
+Top Relevant Chunks
       │
       ▼
-Prompt + Context
+Prompt + Retrieved Context
       │
       ▼
 Gemini LLM
       │
       ▼
-Answer
+Final Answer
 ```
 
 ---
@@ -198,21 +190,21 @@ Answer
 |---------|----------|-------------|
 | GET | `/` | Health Check |
 | POST | `/upload` | Upload PDF |
-| GET | `/pdf-list` | List PDFs |
+| GET | `/pdf-list` | List Uploaded PDFs |
 | DELETE | `/delete-pdf/{filename}` | Delete PDF |
-| POST | `/ask` | Ask Question |
-| POST | `/clear-chat` | Clear Chat |
+| POST | `/ask` | Ask Questions |
+| POST | `/clear-chat` | Clear Conversation |
 
 ---
 
-# 🚀 Local Setup
+# 🚀 Installation
 
 ## Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/PDFGPT.git
+git clone https://github.com/your-username/DocMind.git
 
-cd PDFGPT
+cd DocMind
 ```
 
 ---
@@ -247,13 +239,13 @@ npm run dev
 
 # 🔑 Environment Variables
 
-Backend `.env`
+### Backend (`backend/.env`)
 
 ```env
-GEMINI_API_KEY=YOUR_API_KEY
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 ```
 
-Frontend `.env`
+### Frontend (`frontend/.env`)
 
 ```env
 VITE_API_URL=https://your-render-backend.onrender.com
@@ -261,58 +253,46 @@ VITE_API_URL=https://your-render-backend.onrender.com
 
 ---
 
-# 📸 Screenshots
+# 📸 Demo
 
-> Add screenshots here after deployment.
+> Add screenshots or a GIF demonstrating:
 
-- Upload PDF
-- Ask Questions
-- PDF Viewer
-- Chat Interface
+- Uploading a PDF
+- Asking questions
+- Viewing the PDF
+- AI-generated responses
 
 ---
 
-# 🚀 Future Improvements
+# 🌟 Future Enhancements
 
-- Multi-user authentication
+- User authentication
 - Streaming AI responses
-- Per-document FAISS indexes
-- Hybrid Search (BM25 + Vector Search)
 - OCR support for scanned PDFs
+- Per-document vector indexes
+- Hybrid Search (BM25 + Vector Search)
+- Source highlighting inside PDFs
 - Conversation memory
-- Citation highlighting
-- Multi-agent RAG pipeline
+- Multi-agent architecture
+- Database integration (PostgreSQL/Supabase)
 
 ---
 
-# 📈 Why This Project?
+# 🎯 Learning Outcomes
 
-This project demonstrates practical implementation of modern AI application development by combining:
+This project demonstrates practical implementation of:
 
 - Retrieval-Augmented Generation (RAG)
 - Semantic Search
 - Vector Databases
-- Large Language Models
-- FastAPI APIs
-- React Frontend
+- Large Language Models (LLMs)
+- FastAPI API Development
+- React Frontend Development
 - Cloud Deployment
-
-It showcases the complete workflow of building production-ready AI applications.
-
----
-
-# 👨‍💻 Author
-
-**Keval Solankure**
-
-B.Tech CSE (Big Data Analytics)
-
-SRM Institute of Science and Technology
-
-GitHub: https://github.com/yourusername
-
-LinkedIn: https://linkedin.com/in/yourprofile
+- Full-Stack AI Application Development
 
 ---
 
-# ⭐ If you found this project helpful, consider giving it a star!
+# ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub!
