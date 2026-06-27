@@ -1,28 +1,37 @@
 # DocMind
 
-An AI-powered PDF chatbot built using Retrieval-Augmented Generation (RAG), FastAPI, React, FAISS, and Google Gemini.
+> AI-powered PDF Chatbot built using **Retrieval-Augmented Generation (RAG)**, **FastAPI**, **React**, **FAISS**, and **Google Gemini**.
+
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![React](https://img.shields.io/badge/React-Frontend-61DAFB)
+![FAISS](https://img.shields.io/badge/FAISS-Vector%20Database-orange)
+![Gemini](https://img.shields.io/badge/Google-Gemini-red)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ---
 
 ## Overview
 
-DocMind enables users to upload PDF documents and interact with them using natural language. Instead of performing keyword-based search, it retrieves semantically relevant document chunks using vector similarity search and generates accurate responses using Google's Gemini model.
+DocMind is an AI-powered document assistant that enables users to upload PDF documents and interact with them using natural language.
+
+The application leverages **Retrieval-Augmented Generation (RAG)** to retrieve semantically relevant document chunks using **FAISS** and generate context-aware responses using **Google Gemini**.
 
 ---
 
 ## Features
 
 - Upload and manage multiple PDF documents
-- Ask questions using natural language
+- Natural language question answering
 - Retrieval-Augmented Generation (RAG)
 - Semantic search with FAISS
+- Automatic PDF text chunking
 - Integrated PDF viewer
-- Automatic document chunking
 - Persistent vector storage
-- Chat history support
+- Conversation history
 - REST API built with FastAPI
-- Modern React-based interface
-- Cloud deployment with Render and Vercel
+- Modern React-based user interface
+- Deployable on Render and Vercel
 
 ---
 
@@ -55,7 +64,7 @@ DocMind enables users to upload PDF documents and interact with them using natur
         Relevant Context Chunks
                   │
                   ▼
-          Gemini 2.5 Flash
+         Gemini 2.5 Flash
                   │
                   ▼
             Final Response
@@ -122,23 +131,28 @@ DocMind
 
 ### 1. Document Processing
 
-Uploaded PDFs are parsed using PyPDF, and the extracted text is divided into semantic chunks using LangChain's Recursive Character Text Splitter.
+Uploaded PDF files are processed using **PyPDF**, and the extracted text is divided into semantic chunks using LangChain's Recursive Character Text Splitter.
 
 ### 2. Embedding Generation
 
-Each chunk is converted into vector embeddings using Google's Gemini Embedding Model.
+Each document chunk is converted into vector embeddings using Google's **Gemini Embedding Model**.
 
 ### 3. Vector Indexing
 
-Embeddings are stored in a FAISS vector index to enable fast semantic similarity search.
+The generated embeddings are stored in a **FAISS** vector database for efficient similarity search.
 
 ### 4. Retrieval
 
-For every user query, an embedding is generated and compared against the stored vectors to retrieve the most relevant document chunks.
+For every user query:
+
+- Generate query embeddings
+- Search FAISS for the most relevant document chunks
+- Retrieve contextual information
+- Pass the retrieved context to Gemini
 
 ### 5. Response Generation
 
-The retrieved context, along with the user question, is passed to Gemini to generate an accurate response grounded in the uploaded document.
+Gemini generates a concise response using only the retrieved document context, ensuring answers remain grounded in the uploaded PDFs.
 
 ---
 
@@ -154,16 +168,16 @@ Generate Query Embedding
 FAISS Similarity Search
       │
       ▼
-Relevant Document Chunks
+Retrieve Relevant Chunks
       │
       ▼
-Prompt Construction
+Construct Prompt
       │
       ▼
 Gemini LLM
       │
       ▼
-Generated Response
+Final Answer
 ```
 
 ---
@@ -171,7 +185,7 @@ Generated Response
 ## API Endpoints
 
 | Method | Endpoint | Description |
-|---------|----------|-------------|
+|----------|-------------------------|--------------------------|
 | GET | `/` | Health Check |
 | POST | `/upload` | Upload a PDF |
 | GET | `/pdf-list` | List uploaded PDFs |
@@ -187,6 +201,7 @@ Generated Response
 
 ```bash
 git clone https://github.com/your-username/DocMind.git
+
 cd DocMind
 ```
 
@@ -222,16 +237,16 @@ npm run dev
 
 ## Environment Variables
 
-### Backend
+### Backend (`backend/.env`)
 
 ```env
-GEMINI_API_KEY=YOUR_API_KEY
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 ```
 
-### Frontend
+### Frontend (`frontend/.env`)
 
 ```env
-VITE_API_URL=https://your-render-backend.onrender.com
+VITE_API_URL=https://your-backend.onrender.com
 ```
 
 ---
@@ -241,8 +256,8 @@ VITE_API_URL=https://your-render-backend.onrender.com
 - User authentication
 - OCR support for scanned documents
 - Streaming AI responses
-- Source highlighting inside PDFs
-- Hybrid search (BM25 + Vector Search)
+- Source highlighting within PDFs
+- Hybrid Search (BM25 + Vector Search)
 - Conversation memory
 - Database integration
 - Multi-agent RAG architecture
@@ -251,4 +266,4 @@ VITE_API_URL=https://your-render-backend.onrender.com
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
